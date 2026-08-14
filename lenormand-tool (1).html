@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>雷諾曼丨雪莉的芳療觀點</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --parchment:#FBF0EF;
+    --linen:#F1DCDA;
+    --clay:#E8B9B4;
+    --clay-deep:#D89791;
+    --sage:#93A67F;
+    --bark:#5C4A45;
+    --mist:#BFA6A2;
+    --indigo:#5B6E4F;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--parchment);
+    background-image:
+      radial-gradient(circle at 10% 8%, rgba(147,166,127,0.10), transparent 40%),
+      radial-gradient(circle at 90% 92%, rgba(232,185,180,0.14), transparent 45%);
+    color:var(--bark);
+    font-family:'Noto Sans TC', sans-serif;
+    letter-spacing:0.03em;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+  }
+  .app{
+    width:100%;
+    max-width:480px;
+    min-height:100vh;
+    padding:28px 20px 60px;
+    position:relative;
+  }
+  .brand{
+    text-align:center;
+    margin-bottom:22px;
+  }
+  .brand .en{
+    font-family:'Noto Sans TC', sans-serif;
+    font-size:13px;
+    letter-spacing:0.26em;
+    color:var(--clay-deep);
+    text-transform:uppercase;
+  }
+  .brand h1{
+    font-size:23px;
+    font-weight:700;
+    margin:4px 0 0;
+    letter-spacing:0.09em;
+    color:var(--indigo);
+  }
+  .steps{
+    display:flex;
+    justify-content:center;
+    gap:22px;
+    margin:22px 0 26px;
+  }
+  .steps .s{
+    font-family:'Noto Sans TC', sans-serif;
+    font-size:13px;
+    color:var(--mist);
+    padding-bottom:6px;
+    border-bottom:1px solid transparent;
+    letter-spacing:0.06em;
+  }
+  .steps .s.active{
+    color:var(--indigo);
+    border-bottom:1px solid var(--clay-deep);
+  }
+  .panel{display:none;}
+  .panel.active{display:block; animation:fadein .35s ease;}
+  @keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  label.field-label{
+    display:block;
+    font-size:13px;
+    color:var(--mist);
+    margin:0 0 8px;
+    letter-spacing:0.07em;
+    font-weight:300;
+  }
+  textarea, input[type=text]{
+    width:100%;
+    background:rgba(255,255,255,0.55);
+    border:1px solid var(--linen);
+    border-radius:2px;
+    padding:12px 13px;
+    font-family:'Noto Sans TC', sans-serif;
+    font-size:15px;
+    color:var(--bark);
+    resize:none;
+    outline:none;
+    transition:border-color .2s;
+  }
+  textarea:focus, input[type=text]:focus{border-color:var(--clay-deep);}
+  textarea{height:180px; line-height:1.6;}
+
+  .textarea-wrap{position:relative;}
+  .textarea-wrap textarea{padding-right:44px;}
+  .clear-btn{
+    position:absolute;
+    top:12px;
+    right:12px;
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    border:1px solid var(--linen);
+    background:rgba(255,255,255,0.75);
+    color:var(--mist);
+    font-size:15px;
+    line-height:1;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    padding:0;
+  }
+  .clear-btn.show{display:flex;}
+  .clear-btn:active{background:var(--linen);}
+  .char-count{
+    text-align:right;
+    font-size:12px;
+    color:var(--mist);
+    margin-top:6px;
+    letter-spacing:0.06em;
+  }
+
+  .block{margin-bottom:26px;}
+
+  .mode-toggle{
+    display:flex;
+    border:1px solid var(--linen);
+    border-radius:3px;
+    overflow:hidden;
+  }
+  .mode-opt{
+    flex:1;
+    text-align:center;
+    padding:11px 8px;
+    font-size:13px;
+    color:var(--mist);
+    cursor:pointer;
+    transition:all .18s;
+  }
+  .mode-opt.sel{
+    background:var(--indigo);
+    color:var(--parchment);
+  }
+  .ab-label-row{
+    display:flex;
+    gap:10px;
+  }
+  .ab-label-row input{flex:1; font-size:14px; padding:10px 12px;}
+
+  .spread-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:8px;
+  }
+  .spread-opt{
+    aspect-ratio:1/1.15;
+    border:1px solid var(--linen);
+    border-radius:3px;
+    background:rgba(255,255,255,0.4);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:all .18s;
+  }
+  .spread-opt .num{
+    font-family:'Noto Sans TC', sans-serif;
+    font-size:22px;
+    color:var(--indigo);
+  }
+  .spread-opt .lb{font-size:11px; color:var(--mist); margin-top:2px;}
+  .spread-grid.compare-mode{
+    grid-template-columns:repeat(3,1fr);
+  }
+  .spread-grid.compare-mode .wide-only{display:none;}
+  .spread-opt.sel{
+    background:var(--indigo);
+    border-color:var(--indigo);
+  }
+  .spread-opt.sel .num, .spread-opt.sel .lb{color:var(--parchment);}
+
+  .pos-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .pos-idx{
+    font-family:'Noto Sans TC', sans-serif;
+    font-size:16px;
+    color:var(--clay-deep);
+    width:20px;
+    flex-shrink:0;
+    text-align:right;
+  }
+  .pos-row input{flex:1; font-size:14px; padding:10px 12px;}
+
+  .btn{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:2px;
+    font-family:'Noto Sans TC', sans-serif;
+    font-size:15px;
+    font-weight:500;
+    letter-spacing:0.14em;
+    cursor:pointer;
+    transition:opacity .2s, transform .15s;
+  }
+  .btn:active{transform:scale(0.985);}
+  .btn-primary{
+    background:var(--indigo);
+    color:var(--parchment);
+    margin-top:6px;
+    font-weight:500;
+  }
+  .btn-ghost{
+    background:transparent;
+    color:var(--mist);
+    border:1px solid var(--linen);
+    font-size:13px;
+    font-weight:300;
+    padding:11px;
+    margin-top:10px;
+  }
+
+  .result-heading{
+    text-align:center;
+    font-size:26px;
+    font-weight:700;
+    color:var(--indigo);
+    letter-spacing:0.09em;
+    margin-bottom:14px;
+  }
+  .question-echo{
+    text-align:center;
+    font-size:15px;
+    color:var(--mist);
+    padding:0 6px;
+    margin-bottom:6px;
+    line-height:1.7;
+  }
+
+  .deck-stage{
+    text-align:center;
+    margin-bottom:20px;
+  }
+  .deck-back{
+    width:96px;
+    height:150px;
+    margin:0 auto;
+    border-radius:6px;
+    background:
+      repeating-linear-gradient(135deg, rgba(232,185,180,0.5) 0 2px, transparent 2px 14px),
+      var(--indigo);
+    border:1px solid rgba(251,240,239,0.35);
+    position:relative;
+    box-shadow:0 10px 24px rgba(91,110,79,0.35);
+    cursor:pointer;
+    transition:transform .2s;
+  }
+  .deck-back::after{
+    content:"";
+    position:absolute;
+    inset:10px;
+    border:1px solid rgba(251,240,239,0.4);
+    border-radius:3px;
+  }
+  .deck-back:active{transform:scale(0.97);}
+  .draw-time{
+    text-align:center;
+    font-size:12px;
+    color:var(--mist);
+    margin:0 0 28px;
+    letter-spacing:0.06em;
+  }
+  .deck-hint{
+    font-size:12px;
+    color:var(--mist);
+    margin-top:12px;
+    letter-spacing:0.11em;
+  }
+
+  .cards-wrap{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px 14px;
+  }
+  .card-unit{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:9px;
+    width:104px;
+  }
+  .card-unit .cap{
+    font-size:12px;
+    color:var(--mist);
+    text-align:center;
+    line-height:1.4;
+  }
+  .card-unit .cap .n{
+    font-family:'Noto Sans TC', sans-serif;
+    color:var(--clay-deep);
+    font-size:13px;
+    margin-right:3px;
+  }
+
+  .compare-row{
+    width:100%;
+    margin-bottom:20px;
+    padding-bottom:18px;
+    border-bottom:1px solid var(--linen);
+  }
+  .compare-row:last-child{border-bottom:none; margin-bottom:0;}
+  .compare-pos-label{
+    text-align:center;
+    font-size:13px;
+    color:var(--mist);
+    margin-bottom:12px;
+  }
+  .compare-pos-label .n{
+    font-family:'Noto Sans TC', sans-serif;
+    color:var(--clay-deep);
+    font-size:14px;
+    margin-right:4px;
+  }
+  .compare-pair{
+    display:flex;
+    justify-content:center;
+    gap:16px;
+  }
+  .compare-card-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+  }
+  .compare-tag{
+    font-size:11px;
+    padding:2px 12px;
+    border-radius:10px;
+    letter-spacing:0.11em;
+    color:var(--parchment);
+  }
+  .compare-tag.a{background:var(--clay-deep);}
+  .compare-tag.b{background:var(--sage);}
+
+  .card{
+    perspective:800px;
+    width:104px;
+    height:162px;
+    flex-shrink:0;
+  }
+  .card-inner{
+    width:100%; height:100%;
+    position:relative;
+    transform-style:preserve-3d;
+    transition:transform .55s cubic-bezier(.4,.2,.2,1);
+    cursor:pointer;
+  }
+  .card.flipped .card-inner{transform:rotateY(180deg);}
+  .card-face{
+    position:absolute; inset:0;
+    border-radius:6px;
+    backface-visibility:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .card-back{
+    background:
+      repeating-linear-gradient(135deg, rgba(232,185,180,0.5) 0 2px, transparent 2px 14px),
+      var(--indigo);
+    border:1px solid rgba(251,240,239,0.35);
+    box-shadow:0 6px 14px rgba(91,110,79,0.28);
+  }
+  .card-back::after{
+    content:"";
+    position:absolute; inset:8px;
+    border:1px solid rgba(251,240,239,0.4);
+    border-radius:3px;
+  }
+  .card-front{
+    background:var(--parchment);
+    border:1px solid var(--clay);
+    transform:rotateY(180deg);
+    flex-direction:column;
+    padding:10px 6px;
+    text-align:center;
+    box-shadow:0 6px 14px rgba(92,74,69,0.18);
+  }
+  .card-front .num{
+    font-family:'Noto Sans TC', sans-serif;
+    font-size:12px;
+    color:var(--clay-deep);
+    letter-spacing:0.09em;
+    margin-bottom:2px;
+  }
+  .card-front .cn{
+    font-size:16px;
+    font-weight:500;
+    color:var(--indigo);
+    line-height:1.3;
+    writing-mode:horizontal-tb;
+  }
+  .card-front .mark{
+    width:20px; height:1px;
+    background:var(--linen);
+    margin:6px auto;
+  }
+
+  .reveal-note{
+    display:none;
+    font-size:13px;
+    color:var(--bark);
+    background:rgba(147,166,127,0.12);
+    border-left:2px solid var(--sage);
+    padding:8px 10px;
+    margin-top:8px;
+    line-height:1.5;
+  }
+  .reveal-note.show{display:block;}
+
+  .pill-actions{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+    margin-top:32px;
+  }
+  .btn-pill{
+    min-width:170px;
+    padding:12px 30px;
+    border-radius:999px;
+    border:1px solid var(--linen);
+    background:rgba(255,255,255,0.5);
+    color:var(--bark);
+    font-family:'Noto Sans TC', sans-serif;
+    font-size:14px;
+    font-weight:500;
+    letter-spacing:0.11em;
+    cursor:pointer;
+    transition:all .2s;
+  }
+  .btn-pill:active{transform:scale(0.97);}
+  .btn-pill-ghost{
+    background:transparent;
+    color:var(--mist);
+    font-weight:300;
+  }
+  .btn-pill-solid{
+    background:var(--sage);
+    color:var(--parchment);
+    border-color:var(--sage);
+    font-weight:500;
+  }
+  .btn-pill-solid.copied{
+    background:var(--clay-deep);
+    border-color:var(--clay-deep);
+  }
+
+  .footer-actions{
+    margin-top:22px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+  }
+  .link-btn{
+    background:none;
+    border:none;
+    color:var(--mist);
+    font-family:'Noto Sans TC', sans-serif;
+    font-size:13px;
+    font-weight:300;
+    letter-spacing:0.07em;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    cursor:pointer;
+    padding:4px;
+  }
+  .link-btn.copied{color:var(--clay-deep);}
+  .copy-area{
+    position:absolute;
+    left:-9999px;
+    top:-9999px;
+  }
+
+  .credit{
+    display:block;
+    text-align:center;
+    margin-top:40px;
+    text-decoration:none;
+  }
+  .credit .credit-zh{
+    display:block;
+    font-family:'Noto Sans TC', sans-serif;
+    font-size:12px;
+    font-weight:300;
+    color:var(--bark);
+    letter-spacing:0.09em;
+  }
+  .credit .credit-en{
+    display:block;
+    font-family:'Noto Sans TC', sans-serif;
+    font-size:11px;
+    color:var(--mist);
+    letter-spacing:0.11em;
+    margin-top:2px;
+  }
+  .credit:active{opacity:0.7;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="brand">
+    <div class="en">Lenormand Draw</div>
+    <h1>雷諾曼抽牌</h1>
+  </div>
+
+  <div class="steps">
+    <div class="s" data-step="1">問題與牌陣</div>
+    <div class="s" data-step="2">牌位意義</div>
+    <div class="s" data-step="3">抽牌</div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="panel" id="panel1">
+    <div class="block">
+      <label class="field-label">模式</label>
+      <div class="mode-toggle" id="modeToggle">
+        <div class="mode-opt sel" data-mode="single">單一牌陣</div>
+        <div class="mode-opt" data-mode="compare">AB 比較</div>
+      </div>
+    </div>
+    <div class="block">
+      <label class="field-label">你想詢問的問題</label>
+      <div class="textarea-wrap">
+        <textarea id="questionInput" maxlength="200" placeholder="我想問的是……"></textarea>
+        <button type="button" class="clear-btn" id="clearQuestionBtn" aria-label="清除文字">×</button>
+      </div>
+      <div class="char-count" id="charCount">0 / 200</div>
+    </div>
+    <div class="block" id="abLabelsBlock" style="display:none;">
+      <label class="field-label">比較的兩個對象</label>
+      <div class="ab-label-row">
+        <input type="text" id="labelAInput" value="選項 A" placeholder="A 名稱">
+        <input type="text" id="labelBInput" value="選項 B" placeholder="B 名稱">
+      </div>
+    </div>
+    <div class="block">
+      <label class="field-label">選擇牌陣張數</label>
+      <div class="spread-grid" id="spreadGrid">
+        <div class="spread-opt" data-n="1"><span class="num">1</span><span class="lb">單張</span></div>
+        <div class="spread-opt" data-n="3"><span class="num">3</span><span class="lb">三張</span></div>
+        <div class="spread-opt" data-n="5"><span class="num">5</span><span class="lb">五張</span></div>
+        <div class="spread-opt wide-only" data-n="7"><span class="num">7</span><span class="lb">七張</span></div>
+        <div class="spread-opt wide-only" data-n="9"><span class="num">9</span><span class="lb">九張</span></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="toStep2">下一步 · 設定牌位意義</button>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="panel" id="panel2">
+    <div class="block">
+      <label class="field-label">一次輸入所有牌位意義（每行一個，依序對應）</label>
+      <div class="textarea-wrap">
+        <textarea id="bulkPosInput" placeholder="過去&#10;現在&#10;未來"></textarea>
+        <button type="button" class="clear-btn" id="clearBulkPosBtn" aria-label="清除文字">×</button>
+      </div>
+      <button class="btn btn-ghost" id="applyBulkPos" style="margin-top:8px;">套用到下方欄位</button>
+    </div>
+    <div class="block">
+      <label class="field-label">或分別編輯每一格</label>
+      <div id="posList"></div>
+    </div>
+    <button class="btn btn-primary" id="toStep3">下一步 · 開始抽牌</button>
+    <button class="btn btn-ghost" id="backTo1">返回首頁</button>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="panel" id="panel3">
+    <div class="result-heading">占卜結果</div>
+    <div class="question-echo" id="questionEcho"></div>
+    <div class="draw-time" id="drawTime" style="display:none;"></div>
+
+    <div class="deck-stage" id="deckStage">
+      <div class="deck-back" id="deckBack"></div>
+      <div class="deck-hint">點擊牌堆，抽出本次的牌</div>
+    </div>
+
+    <div class="cards-wrap" id="cardsWrap" style="display:none;"></div>
+
+    <div class="pill-actions" id="pillActions" style="display:none;">
+      <button class="btn-pill" id="flipAllBtn">全部翻開</button>
+      <button class="btn-pill btn-pill-solid" id="copyResult">複製問題與抽牌結果</button>
+      <button class="btn-pill btn-pill-ghost" id="backToSetup">返回首頁</button>
+    </div>
+
+    <div class="footer-actions" id="footerActions" style="display:none;">
+      <button class="link-btn" id="redraw">重新抽牌（同一牌陣）</button>
+    </div>
+    <textarea class="copy-area" id="copyArea" readonly></textarea>
+  </div>
+
+  <a class="credit" href="https://portaly.cc/sherry.aromatherapy" target="_blank" rel="noopener">
+    <span class="credit-zh">雪莉的芳療觀點</span>
+    <span class="credit-en">sherry.aromatherapy</span>
+  </a>
+</div>
+
+<script>
+// ---------- Deck data ----------
+const LENORMAND_NAMES = [
+  "01 騎士","02 三葉草","03 船","04 房子","05 樹",
+  "06 雲","07 蛇","08 棺材","09 花束","10 鐮刀",
+  "11 鞭子","12 鳥","13 孩童","14 狐狸","15 熊",
+  "16 星星","17 鸛鳥","18 狗","19 塔","20 花園",
+  "21 山","22 岔路","23 老鼠","24 心","25 戒指",
+  "26 書","27 信","28 男人","29 女人","30 百合",
+  "31 太陽","32 月亮","33 鑰匙","34 魚","35 錨","36 十字架"
+];
+
+const FULL_DECK = LENORMAND_NAMES.map(n => ({name:n}));
+
+// ---------- Default position labels per spread ----------
+const DEFAULTS = {
+  1: ["今日指引"],
+  3: ["過去","現在","未來"],
+  5: ["過去","現在","未來","建議","可能結果"],
+  7: ["現況","內在心境","外在環境","助力","阻力","建議","結果"],
+  9: ["過去","現在","未來","自己","對方／他人","環境","建議","機會","最終結果"]
+};
+
+// ---------- State ----------
+let state = {
+  question:"",
+  n:3,
+  positions:[],
+  drawn:[],
+  compareMode:false,
+  labelA:"選項 A",
+  labelB:"選項 B",
+  drawnA:[],
+  drawnB:[]
+};
+
+// ---------- Step nav ----------
+function showStep(step){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel'+step).classList.add('active');
+  document.querySelectorAll('.steps .s').forEach(s=>{
+    s.classList.toggle('active', s.dataset.step == step);
+  });
+}
+showStep(1);
+
+// ---------- Step 1: question textarea (clear button + counter) ----------
+const questionInput = document.getElementById('questionInput');
+const clearQuestionBtn = document.getElementById('clearQuestionBtn');
+const charCount = document.getElementById('charCount');
+
+function updateQuestionUI(){
+  const len = questionInput.value.length;
+  charCount.textContent = `${len} / 200`;
+  clearQuestionBtn.classList.toggle('show', len > 0);
+}
+questionInput.addEventListener('input', updateQuestionUI);
+clearQuestionBtn.addEventListener('click', ()=>{
+  questionInput.value = '';
+  updateQuestionUI();
+  questionInput.focus();
+});
+updateQuestionUI();
+
+// ---------- Step 1: mode toggle ----------
+document.querySelectorAll('.mode-opt').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    document.querySelectorAll('.mode-opt').forEach(o=>o.classList.remove('sel'));
+    el.classList.add('sel');
+    state.compareMode = el.dataset.mode === 'compare';
+    document.getElementById('abLabelsBlock').style.display = state.compareMode ? 'block' : 'none';
+    const grid = document.getElementById('spreadGrid');
+    grid.classList.toggle('compare-mode', state.compareMode);
+    if(state.compareMode && (state.n === 7 || state.n === 9)){
+      document.querySelectorAll('.spread-opt').forEach(o=>o.classList.remove('sel'));
+      document.querySelector('.spread-opt[data-n="3"]').classList.add('sel');
+      state.n = 3;
+    }
+  });
+});
+
+// ---------- Step 1: spread selection ----------
+document.querySelectorAll('.spread-opt').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    document.querySelectorAll('.spread-opt').forEach(o=>o.classList.remove('sel'));
+    el.classList.add('sel');
+    state.n = parseInt(el.dataset.n);
+  });
+});
+document.querySelector('.spread-opt[data-n="3"]').classList.add('sel');
+
+document.getElementById('toStep2').addEventListener('click', ()=>{
+  state.question = document.getElementById('questionInput').value.trim();
+  if(state.compareMode){
+    state.labelA = document.getElementById('labelAInput').value.trim() || '選項 A';
+    state.labelB = document.getElementById('labelBInput').value.trim() || '選項 B';
+  }
+  buildPosList();
+  showStep(2);
+});
+
+// ---------- Step 2: position naming ----------
+function buildPosList(){
+  const wrap = document.getElementById('posList');
+  wrap.innerHTML = '';
+  document.getElementById('bulkPosInput').value = '';
+  updateBulkPosUI();
+  const defaults = DEFAULTS[state.n];
+  state.positions = defaults.slice();
+  defaults.forEach((label, i)=>{
+    const row = document.createElement('div');
+    row.className = 'pos-row';
+    row.innerHTML = `<span class="pos-idx">${i+1}</span><input type="text" placeholder="${label}" data-i="${i}">`;
+    wrap.appendChild(row);
+  });
+  wrap.querySelectorAll('input').forEach(inp=>{
+    inp.addEventListener('input', e=>{
+      state.positions[e.target.dataset.i] = e.target.value || defaults[e.target.dataset.i];
+    });
+  });
+}
+
+const bulkPosInput = document.getElementById('bulkPosInput');
+const clearBulkPosBtn = document.getElementById('clearBulkPosBtn');
+
+function updateBulkPosUI(){
+  clearBulkPosBtn.classList.toggle('show', bulkPosInput.value.length > 0);
+}
+bulkPosInput.addEventListener('input', updateBulkPosUI);
+clearBulkPosBtn.addEventListener('click', ()=>{
+  bulkPosInput.value = '';
+  updateBulkPosUI();
+  bulkPosInput.focus();
+});
+
+document.getElementById('applyBulkPos').addEventListener('click', ()=>{
+  const lines = bulkPosInput.value.split('\n').map(s=>s.trim()).filter(s=>s.length>0);
+  const inputs = document.querySelectorAll('#posList input');
+  inputs.forEach((inp, i)=>{
+    if(lines[i] !== undefined){
+      inp.value = lines[i];
+      state.positions[i] = lines[i];
+    }
+  });
+});
+
+document.getElementById('backTo1').addEventListener('click', ()=> showStep(1));
+
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+document.getElementById('toStep3').addEventListener('click', ()=>{
+  let echo = state.question ? `「${escapeHtml(state.question)}」` : '（未輸入問題，直接抽牌觀察訊息）';
+  if(state.compareMode){
+    echo += `<br><span style="font-size:13px;">A：${escapeHtml(state.labelA)}　B：${escapeHtml(state.labelB)}</span>`;
+  }
+  document.getElementById('questionEcho').innerHTML = echo;
+  resetDrawUI();
+  showStep(3);
+});
+
+// ---------- Step 3: draw ----------
+function resetDrawUI(){
+  document.getElementById('deckStage').style.display = 'block';
+  document.getElementById('cardsWrap').style.display = 'none';
+  document.getElementById('cardsWrap').innerHTML = '';
+  document.getElementById('footerActions').style.display = 'none';
+  document.getElementById('pillActions').style.display = 'none';
+  document.getElementById('drawTime').style.display = 'none';
+}
+
+function drawCards(){
+  if(state.compareMode){
+    const shuffledA = [...FULL_DECK].sort(()=>Math.random()-0.5);
+    const shuffledB = [...FULL_DECK].sort(()=>Math.random()-0.5);
+    state.drawnA = shuffledA.slice(0, state.n);
+    state.drawnB = shuffledB.slice(0, state.n);
+  } else {
+    const shuffled = [...FULL_DECK].sort(()=>Math.random()-0.5);
+    state.drawn = shuffled.slice(0, state.n);
+  }
+  state.drawnAt = new Date();
+  renderCards();
+}
+
+function buildCard(card){
+  const [num, ...nameParts] = card.name.split(' ');
+  const name = nameParts.join(' ');
+  const cardEl = document.createElement('div');
+  cardEl.className = 'card';
+  cardEl.innerHTML = `
+    <div class="card-inner">
+      <div class="card-face card-back"></div>
+      <div class="card-face card-front">
+        <div class="num">${num}</div>
+        <div class="cn">${name}</div>
+        <div class="mark"></div>
+      </div>
+    </div>`;
+  cardEl.addEventListener('click', ()=>{
+    cardEl.classList.toggle('flipped');
+  });
+  return cardEl;
+}
+
+function buildCompareCardWrap(card, label, tagClass){
+  const wrap = document.createElement('div');
+  wrap.className = 'compare-card-wrap';
+  const tag = document.createElement('div');
+  tag.className = `compare-tag ${tagClass}`;
+  tag.textContent = label;
+  wrap.appendChild(tag);
+  wrap.appendChild(buildCard(card));
+  return wrap;
+}
+
+function renderCards(){
+  document.getElementById('deckStage').style.display = 'none';
+  const wrap = document.getElementById('cardsWrap');
+  wrap.style.display = 'flex';
+  wrap.innerHTML = '';
+
+  if(state.compareMode){
+    for(let i=0; i<state.n; i++){
+      const row = document.createElement('div');
+      row.className = 'compare-row';
+
+      const posLabel = document.createElement('div');
+      posLabel.className = 'compare-pos-label';
+      posLabel.innerHTML = `<span class="n">${i+1}</span>${state.positions[i]}`;
+      row.appendChild(posLabel);
+
+      const pair = document.createElement('div');
+      pair.className = 'compare-pair';
+      pair.appendChild(buildCompareCardWrap(state.drawnA[i], state.labelA, 'a'));
+      pair.appendChild(buildCompareCardWrap(state.drawnB[i], state.labelB, 'b'));
+      row.appendChild(pair);
+
+      wrap.appendChild(row);
+    }
+  } else {
+    state.drawn.forEach((card, i)=>{
+      const unit = document.createElement('div');
+      unit.className = 'card-unit';
+
+      const cap = document.createElement('div');
+      cap.className = 'cap';
+      cap.innerHTML = `<span class="n">${i+1}</span>${state.positions[i]}`;
+
+      unit.appendChild(buildCard(card));
+      unit.appendChild(cap);
+      wrap.appendChild(unit);
+    });
+  }
+
+  document.getElementById('footerActions').style.display = 'flex';
+  document.getElementById('pillActions').style.display = 'flex';
+  const flipBtn = document.getElementById('flipAllBtn');
+  flipBtn.textContent = '全部翻開';
+
+  const timeEl = document.getElementById('drawTime');
+  timeEl.style.display = 'block';
+  timeEl.textContent = `抽牌時間：${formatDrawTime(state.drawnAt)}`;
+}
+
+function flipAllCards(){
+  const cards = document.querySelectorAll('#cardsWrap .card');
+  cards.forEach(c => c.classList.add('flipped'));
+}
+document.getElementById('flipAllBtn').addEventListener('click', flipAllCards);
+
+function formatDrawTime(d){
+  const pad = n => String(n).padStart(2,'0');
+  const weekday = ['日','一','二','三','四','五','六'][d.getDay()];
+  return `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())}（週${weekday}） ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function buildResultText(){
+  const spreadNames = {1:"單張",3:"三張",5:"五張",7:"七張",9:"九張"};
+  let lines = [];
+  lines.push(`【雷諾曼抽牌紀錄】`);
+  lines.push(`抽牌時間：${state.drawnAt ? formatDrawTime(state.drawnAt) : ''}`);
+  lines.push(`問題：${state.question ? state.question : '（未輸入問題）'}`);
+  lines.push(`牌陣：${spreadNames[state.n]}${state.compareMode ? '（AB 比較）' : ''}`);
+  lines.push('');
+  if(state.compareMode){
+    lines.push(`A：${state.labelA}　　B：${state.labelB}`);
+    lines.push('');
+    for(let i=0; i<state.n; i++){
+      const a = state.drawnA[i], b = state.drawnB[i];
+      lines.push(`${i+1}. ${state.positions[i]}`);
+      lines.push(`   A｜${a.name}`);
+      lines.push(`   B｜${b.name}`);
+    }
+  } else {
+    state.drawn.forEach((card,i)=>{
+      lines.push(`${i+1}. ${state.positions[i]}｜${card.name}`);
+    });
+  }
+  return lines.join('\n');
+}
+
+function copyResultToClipboard(){
+  const text = buildResultText();
+  const btn = document.getElementById('copyResult');
+  const done = (ok)=>{
+    btn.textContent = ok ? '已複製 ✓' : '複製失敗，請長按選取';
+    btn.classList.toggle('copied', ok);
+    setTimeout(()=>{
+      btn.textContent = '複製問題與抽牌結果';
+      btn.classList.remove('copied');
+    }, 1800);
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>done(true)).catch(()=>{
+      fallbackCopy(text, done);
+    });
+  } else {
+    fallbackCopy(text, done);
+  }
+}
+
+function fallbackCopy(text, done){
+  const area = document.getElementById('copyArea');
+  area.value = text;
+  area.style.left = '0';
+  area.style.top = '0';
+  area.focus();
+  area.select();
+  try{
+    const ok = document.execCommand('copy');
+    done(ok);
+  }catch(e){
+    done(false);
+  }
+  area.style.left = '-9999px';
+  area.style.top = '-9999px';
+}
+
+document.getElementById('copyResult').addEventListener('click', copyResultToClipboard);
+
+document.getElementById('deckBack').addEventListener('click', drawCards);
+document.getElementById('redraw').addEventListener('click', ()=>{
+  resetDrawUI();
+});
+document.getElementById('backToSetup').addEventListener('click', ()=>{
+  document.getElementById('questionInput').value = state.question;
+  updateQuestionUI();
+  if(state.compareMode){
+    document.getElementById('labelAInput').value = state.labelA;
+    document.getElementById('labelBInput').value = state.labelB;
+  }
+  showStep(1);
+});
+</script>
+</body>
+</html>
